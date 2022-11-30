@@ -1,15 +1,15 @@
 # Created by: CharmedOnesFJO
 # Date Created : 01Aug2022 revised 20Nov2022
 # Description : Customized Routine to create Hotspot base on VLAN ID
-#### Tested and Working 28 Nov 2022
+# How to use : Upload this file to Winbox then open Terminal [import file-name=ScriptToADD_HSVLAN.rsc]
 / system logging enable 0;
 :log info "ScriptGenerationStarted $[/system clock get date] $[/system clock get time]"
 {
 ### ADD MODE Sequence 0=addALL 1=ADD Only VLAN ID and VLAN Bridge Ports :if ($AddMode=0) do={ }
 :local AddMode 1;     
 ### Change value Accordingly    
-:local etherport "ether7";
-:local vportname "E07";
+:local etherport "ether6";
+:local vportname "E06";
 ### Fixed Value Dont Change anything
 :local vname "bridge-hs-v";
 :local HSdummy "xDummyDONTDeleteEnableThisItem"
