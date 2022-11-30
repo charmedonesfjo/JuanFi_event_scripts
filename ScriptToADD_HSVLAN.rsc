@@ -59,4 +59,3 @@
 / file remove [find name=flash/skins/ScriptToADD_HSVLAN.rsc];
 / file remove [find name=flash/pub/ScriptToADD_HSVLAN.rsc];
 / console clear-history;
-#:do {/ip dhcp-client add disabled=no interface="$[/interface ethernet get [/interface ethernet find default-name=ether1] name]"} on-error={}
