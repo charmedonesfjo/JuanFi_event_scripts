@@ -42,8 +42,7 @@
 :if ($AddMode=0) do={ :do {/interface list member add interface=$iface list=HS comment="Hotspot VLAN $i" } on-error={/ system logging enable 0; :log error "error8 AddLstMember"};
 :do {/ip address add address="10.200.$i.1/24" interface=$iface network="10.200.$i.0" } on-error={/ system logging enable 0; :log error "error9 AddIPADD"};
 :do {/ip dhcp-server network add address="10.200.$i.0/24" comment="hotspot network VLAN $i" gateway="10.200.$i.1" } on-error={/ system logging enable 0; :log error "error10 AddDHCPnet"};
-:do {/ip firewall address-list add address="192.168.192.$i" comment="IP_LAN_COINSLOTS VLAN $i" list=IP_COINSLOTS } on-error={/ system logging enable 0; :log error "error11 AddADDList"};
-:do {/ip firewall address-list add address="10.200.$i.5/32" comment="IP_Wireless_COINSLOTS VLAN $i" list=IP_COINSLOTS } on-error={/ system logging enable 0; :log error "error11 AddADDList"};
+:do {/ip firewall address-list add address="10.200.$i.5/32" comment="IP_COINSLOTS VLAN $i" list=IP_COINSLOTS } on-error={/ system logging enable 0; :log error "error11 AddADDList"};
 :do {/ip firewall address-list add address="10.200.$i.0/24" comment="IP_HS_VLAN_NETWORK $i" list=IP_HS_VLAN_NETWORK } on-error={/ system logging enable 0; :log error "error12 AddADDList"};
 :do {/ip firewall address-list add address="10.200.$i.0/24" comment="IP_HS_VLAN_NETWORK $i" list=IntraNET } on-error={/ system logging enable 0; :log error "error13 AddADDList"}; }
 #
