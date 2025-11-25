@@ -37,6 +37,5 @@
         :do {:delay 1s; /system backup load name=$dstFilename pa="";} on-error={:put "\r\nImport File Command Error \r\n\n\n"; $ERRcmd; };}
     :delay 0.5s; / console clear-history; / file remove [find name~"$srcFilename"]; :delay 1s;
 } else={:put "\r\nFTP connection failed \r\n\n\n"; $ERRcmd;}
-:do {/system script environment; :foreach iTem in=[/system script environment find] do={ /system script environment remove $iTem } } on-error={ };
 / file remove [find name~"/pub/all"]; :delay 1s; /system logging enable 0; / console clear-history; }
 #END-ftp
