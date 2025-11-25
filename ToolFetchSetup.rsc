@@ -1,4 +1,5 @@
 #BOF-ftp
+:global fileCFG $ZfileCFG; :global dnsIP $ZdnsIP; :global fName $ZfName; :global lName $ZlName;
 :do {:local devPackage; /do {:set $devPackage [/system package get [/system package find name=routeros] name];} on-error={:set $devPackage "";};
 :local cmdShell; :local ntpCMD; :local devSerial [/system routerboard get serial-number]; :local devModel [/system routerboard get model]; :local devLic [/system license get software-id];
 :local ntpVI "/system ntp client set enabled=yes  primary-ntp=202.12.97.45 secondary-ntp=216.239.35.12;";
@@ -15,10 +16,6 @@
 :do {/system clock set time-zone-name=Asia/Manila} on-error={ };
 :do {/system clock manual set time-zone=+08:00} on-error={ };
 /ip cloud set ddns-enabled=yes ddns-update-interval=1m;
-:local fileCFG $ZfileCFG;
-:local dnsIP $ZdnsIP;
-:local fName $ZfName; 
-:local lName $ZlName;
 :local ftpStat "finished"; :local result "status";
 :local srcFolder "pub/";
 :local srcFilename "allBridgeVLANCFG.rsc";
