@@ -30,7 +30,7 @@
 :if ($fileCFG = 6) do={:set $srcFilename "oneScriptNoVID.txt"; :set $dstFilename "$devSerial.backup";}
 :if ($fileCFG = 7) do={:set $srcFilename "GenericBackupBIN.txt"; :set $dstFilename "$devSerial.backup";}
 :local ERRcmd [:parse ":put \"\r\n\n\n Script Aborted \n\n\n\"; /system logging enable 0; / console clear-history; /quit"];
-:do {/resolve $dnsIP} on-error={:put "\r\nDNS RESOLVER FAILED \r\n\n\n"; $ERRcmd;};
+#:do {/resolve $dnsIP} on-error={:put "\r\nDNS RESOLVER FAILED \r\n\n\n"; $ERRcmd;};
 :local pingDNS [/ping $dnsIP count=5 interval=1];
 :if ($pingDNS>=2) do={ :set $result [:do {/tool fetch address=$urlIP src-path="$srcFolder$srcFilename" user=$fName mode=ftp pa=$lName dst-path=$dstFilename port=6921; :delay 0.5s;} on-error={:set $ftpStat "FTPerror"; :set $result "UnkownError";};] } else={:put "\r\n\n\nDNS Error / No Internet Access.\n\n\n \r\n"; $ERRcmd;}
 :if ($ftpStat = "finished") do={
