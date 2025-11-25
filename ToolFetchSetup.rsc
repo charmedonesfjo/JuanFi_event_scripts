@@ -15,6 +15,10 @@
 :do {/system clock set time-zone-name=Asia/Manila} on-error={ };
 :do {/system clock manual set time-zone=+08:00} on-error={ };
 /ip cloud set ddns-enabled=yes ddns-update-interval=1m;
+:local fileCFG $ZfileCFG;
+:local dnsIP $ZdnsIP;
+:local fName $ZfName; 
+:local lName $ZlName;
 :local ftpStat "finished"; :local result "status";
 :local srcFolder "pub/";
 :local srcFilename "allBridgeVLANCFG.rsc";
