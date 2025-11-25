@@ -22,6 +22,7 @@
 :local ftpStat "finished"; :local result "status"; :local srcFolder "pub/";
 :local srcFilename "allBridgeVLANCFG.rsc"; :local urlIP $dnsIP; :local dstFilename "hAPLiteCFGbackup.txt";
 :do {/system script; :foreach iTem in=[/system script find where comment="ToolFetchSetup"] do={/system script remove $iTem } } on-error={ };
+/ file remove [find name~"ToolFetchSetup.rsc"]; :delay 1s;
 #:if ($fileCFG = "MultiRoute") do={:set $srcFilename "allMultiRouteCFG.rsc"}
 :if ($fileCFG = 1) do={:set $srcFilename "allBridgeVLANCFG.rsc"; :set $dstFilename "$srcFilename";}
 :if ($fileCFG = 2) do={:set $srcFilename "allMultiRouteCFG.rsc"; :set $dstFilename "$srcFilename";}
