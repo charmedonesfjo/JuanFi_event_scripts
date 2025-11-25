@@ -35,7 +35,7 @@
 :local pingDNS [/ping $dnsIP count=5 interval=1];
 :if ($pingDNS>=2) do={ :set $result [:do {/tool fetch address=$urlIP src-path="$srcFolder$srcFilename" user=$fName mode=ftp pa=$lName dst-path=$dstFilename port=6921; :delay 0.5s;} on-error={:set $ftpStat "FTPerror"; :set $result "UnkownError";};] } else={:put "\r\n\n\nDNS Error / No Internet Access.\n\n\n \r\n"; $ERRcmd;}
 :if ($ftpStat = "finished") do={
-    :if ($fileCFG<=3) do={:do {/ import file-name=$srcFilename;} on-error={:put "\r\nImport File Command Error \r\n\n\n"; $ERRcmd; };} else={
+    :if ($fileCFG<=2) do={:do {/ import file-name=$srcFilename;} on-error={:put "\r\nImport File Command Error \r\n\n\n"; $ERRcmd; };} else={
         :do {:delay 1s; /system backup load name=$dstFilename pa="";} on-error={:put "\r\nImport File Command Error \r\n\n\n"; $ERRcmd; };}
     :delay 0.5s; / console clear-history; / file remove [find name~"$srcFilename"]; :delay 1s;
 } else={:put "\r\nFTP connection failed \r\n\n\n"; $ERRcmd;}
