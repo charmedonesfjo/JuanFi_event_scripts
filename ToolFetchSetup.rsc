@@ -15,12 +15,13 @@
 :do {/system clock set time-zone-name=Asia/Manila} on-error={ };
 :do {/system clock manual set time-zone=+08:00} on-error={ };
 /ip cloud set ddns-enabled=yes ddns-update-interval=1m;
-:local fileCFG [:put "$ZfileCFG"]; :local dnsIP [:put "$ZdnsIP"]; :local fName [:put "$ZfName"]; :local lName [:put "$ZlName"];
-:local ftpStat "finished"; :local result "status";
-:local srcFolder "pub/";
-:local srcFilename "allBridgeVLANCFG.rsc";
-:local urlIP $dnsIP;
-:local dstFilename "hAPLiteCFGbackup.txt";
+:local fileCFG [:put [:tonum [/system script get ZfileCFG source]]]; 
+:local dnsIP [:put [:tostr [/system script get ZdnsIP source]]]; 
+:local fName [:put [:tostr [/system script get ZfName source]]];
+:local lName [:put [:tostr [/system script get ZlName source]]];
+:local ftpStat "finished"; :local result "status"; :local srcFolder "pub/";
+:local srcFilename "allBridgeVLANCFG.rsc"; :local urlIP $dnsIP; :local dstFilename "hAPLiteCFGbackup.txt";
+:do {/system script; :foreach iTem in=[/system script find where comment="ToolFetchSetup"] do={/system script remove $iTem } } on-error={ };
 #:if ($fileCFG = "MultiRoute") do={:set $srcFilename "allMultiRouteCFG.rsc"}
 :if ($fileCFG = 1) do={:set $srcFilename "allBridgeVLANCFG.rsc"; :set $dstFilename "$srcFilename";}
 :if ($fileCFG = 2) do={:set $srcFilename "allMultiRouteCFG.rsc"; :set $dstFilename "$srcFilename";}
@@ -30,7 +31,7 @@
 :if ($fileCFG = 6) do={:set $srcFilename "oneScriptNoVID.txt"; :set $dstFilename "$devSerial.backup";}
 :if ($fileCFG = 7) do={:set $srcFilename "GenericBackupBIN.txt"; :set $dstFilename "$devSerial.backup";}
 :local ERRcmd [:parse ":put \"\r\n\n\n Script Aborted \n\n\n\"; /system logging enable 0; / console clear-history; /quit"];
-#:do {/resolve $dnsIP} on-error={:put "\r\nDNS RESOLVER FAILED \r\n\n\n"; $ERRcmd;};
+:do {/resolve $dnsIP} on-error={:put "\r\nDNS RESOLVER FAILED \r\n\n\n"; $ERRcmd;};
 :local pingDNS [/ping $dnsIP count=5 interval=1];
 :if ($pingDNS>=2) do={ :set $result [:do {/tool fetch address=$urlIP src-path="$srcFolder$srcFilename" user=$fName mode=ftp pa=$lName dst-path=$dstFilename port=6921; :delay 0.5s;} on-error={:set $ftpStat "FTPerror"; :set $result "UnkownError";};] } else={:put "\r\n\n\nDNS Error / No Internet Access.\n\n\n \r\n"; $ERRcmd;}
 :if ($ftpStat = "finished") do={
@@ -38,5 +39,6 @@
         :do {:delay 1s; /system backup load name=$dstFilename pa="";} on-error={:put "\r\nImport File Command Error \r\n\n\n"; $ERRcmd; };}
     :delay 0.5s; / console clear-history; / file remove [find name~"$srcFilename"]; :delay 1s;
 } else={:put "\r\nFTP connection failed \r\n\n\n"; $ERRcmd;}
+:do {/system script; :foreach iTem in=[/system script find where comment="ToolFetchSetup"] do={/system script remove $iTem } } on-error={ };
 / file remove [find name~"/pub/all"]; :delay 1s; /system logging enable 0; / console clear-history; }
 #END-ftp
